@@ -1,62 +1,79 @@
 import React from "react";
-import { StatusBar, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, StyleSheet } from "react-native";
+import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Left, Right, Icon, Form, Text } from "native-base";
 import { connect } from "react-redux";
 import { authenticateStudent } from "../actions/appActions";
 
 class LoginScreen extends React.Component{
-  state = {
-    username: "",
-    password: ""
-  }
-
-  submitData() {
-      this.props.dispatch(authenticateStudent(this.state.username, this.state.password));
-  }
-  render(){
-    return(
-        <KeyboardAvoidingView behavior={'height'} style={styles.container}>
-            <StatusBar barStyle="dark-content"/>
-            <Text style={styles.titleText}>Login to RIDGE</Text>
-          <TextInput style={styles.textBox} placeholderTextColor='#555' placeholder='Username' autoCapitalize={'characters'} onChangeText={(username) => this.setState({username})} returnKeyType={'done'} autoCorrect={false} />
-          <TextInput style={styles.textBox} placeholderTextColor='#555' placeholder='Password' returnKeyType={'done'} onChangeText={(password) => this.setState({password})} autoCapitalize={'none'} autoCorrect={false} secureTextEntry />
-            <TouchableOpacity style={styles.button} onPress={this.submitData.bind(this)} ><Text style={styles.buttonText}>LOGIN</Text></TouchableOpacity>
-        </KeyboardAvoidingView>
-    );
-  }
+    state = {
+        username: "",
+        password: ""
+    }
+    submitData = () => {
+        this.props.dispatch(authenticateStudent(this.state.username, this.state.password));
+    }
+    render(){
+        var loginButton = (
+            <Button onPress={this.submitData} block style={{ margin: 15, marginTop: 50 }}>
+                <Text>Login</Text>
+            </Button>
+        );
+        if(this.props.app.fetching){
+            loginButton = (
+                <Button onPress={null} iconLeft block info style={{ margin: 15, marginTop: 50 }}>
+                    <Icon active name="ios-cloud-circle" />
+                    <Text>Loading</Text>
+                </Button>
+            );
+        }
+        if(this.props.app.fetched){
+            if(this.props.app.authenticated){
+                loginButton = (
+                    <Button onPress={null} iconLeft block success style={{ margin: 15, marginTop: 50 }}>
+                        <Icon active name="ios-checkmark-circle" />
+                        <Text>Logged In</Text>
+                    </Button>
+                );
+            }
+            else{
+                loginButton = (
+                    <Button onPress={this.submitData} iconLeft block danger style={{ margin: 15, marginTop: 50 }}>
+                        <Icon active name="ios-close-circle" />
+                        <Text>Incorrect Login</Text>
+                    </Button>
+                );
+            }
+        }
+        return(
+            <Container>
+                <Header>
+                    <Left/>
+                    <Body>
+                    <Title>Login to RIDGE</Title>
+                    </Body>
+                    <Right />
+                </Header>
+                <Content>
+                    <Form>
+                        <Item floatingLabel>
+                            <Label>Username</Label>
+                            <Input onChangeText={text => this.setState({...this.state, username: text})}/>
+                        </Item>
+                        <Item floatingLabel last>
+                            <Label>Password</Label>
+                            <Input secureTextEntry onChangeText={text => this.setState({...this.state, password: text})}/>
+                        </Item>
+                    </Form>
+                    {loginButton}
+                </Content>
+            </Container>
+        );
+    }
 }
 
-const styles = StyleSheet.create({
-    container:{
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: 0,
-        marginBottom: 75
-    },
-    textBox:{
-      alignSelf: 'stretch', textAlign: 'center', fontSize: 16, padding: 10, margin: 5, color: "#333"
-    },
-    titleText: {
-        fontSize: 24,
-        fontWeight: 'bold'
-    },
-    button:{
-        margin: 10,
-        padding: 30,
-        backgroundColor: "#333",
-        alignSelf: 'stretch',
-        alignItems: 'center'
-    },
-    buttonText:{
-        color: "white",
-        fontWeight: "400"
-    }
-});
-
 function mapStateToProps(state){
-  return {
-    app: state.app
-  };
+    return {
+        app: state.app
+    };
 }
 
 export default connect(mapStateToProps)(LoginScreen);
