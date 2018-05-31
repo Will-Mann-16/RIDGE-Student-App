@@ -1,6 +1,6 @@
 import React from "react";
 import { Platform } from "react-native";
-import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Left, Right, Icon, Form, Text, Card, CardItem } from "native-base";
+import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Left, Right, Icon, Form, Text } from "native-base";
 import { connect } from "react-redux";
 import * as Expo from "expo";
 import { authenticateStudent } from "../actions/appActions";
@@ -54,11 +54,8 @@ class LoginScreen extends React.Component{
                     </Body>
                     <Right />
                 </Header>
-                <Content>
-                  <Card>
-                    <CardItem>
-                      <Body>
-                      <Form>
+                <Content style={{ backgroundColor: "white", margin: 10 }}>
+                    <Form>
                         <Item floatingLabel>
                             <Label>Username</Label>
                             <Input onChangeText={text => this.setState({...this.state, username: text})}/>
@@ -69,9 +66,6 @@ class LoginScreen extends React.Component{
                         </Item>
                     </Form>
                     {loginButton}
-                  </Body>
-                  </CardItem>
-                </Card>
                 </Content>
             </Container>
         );
