@@ -11,7 +11,7 @@ class SettingsScreen extends React.Component{
                 <List>
                     <ListItem icon button onPress={() => this.props.dispatch(logout())}>
                         <Left>
-                            <Icon name="logout" />
+                            <Icon name="exit" />
                         </Left>
                         <Body>
                         <Text>Logout</Text>

@@ -1,5 +1,12 @@
 {
   "expo": {
-    "sdkVersion": "26.0.0"
+    "name": "RIDGE Student",
+    "sdkVersion": "26.0.0",
+    "splash":{
+      "image": "./splash.png",
+      "backgroundColor": "#23265C",
+      "resizeMode": "contain"
+    },
+    "icon": "icon.png"
   }
 }

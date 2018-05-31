@@ -1,12 +1,12 @@
 import {AsyncStorage} from 'react-native';
 import axios from "axios";
-import {disconnect} from '../socket';
+import {disconnect, activateListener} from '../socket';
 import {instance, scriptsDirectory} from "../constants";
 
 export function authenticateStudent(username, password) {
     return dispatch => {
         dispatch({type: 'AUTHENTICATE_STUDENT'});
-        instance.post("students/authenticate", {username, password}, (response) => {
+        instance.post("students/authenticate", {username, password}).then((response) => {
             if (response.status === 200 && response.data.success) {
                 if (response.data.authenticated) {
                     try {
@@ -33,14 +33,16 @@ export function readStudent() {
         try {
             AsyncStorage.getItem('@RIDGE-Student:auth_token', (err, token) => {
                 if (token !== null) {
-                  console.log(token);
-                    axios.post("http://194.73.225.206:8081/api/students/app-read-token", {token}, (response) => {
-                      console.log(response);
+                    instance.post("students/app-read-token", {token}).then((response) => {
                         if (response.status === 200 && response.data.success) {
                             if (response.data.empty) {
                                 dispatch({type: 'READ_STUDENT_EMPTY', payload: false});
                             } else {
                                 dispatch(getHouseConfig(response.data.student._id));
+                                dispatch(readStudentMajor(response.data.student._id));
+                                dispatch(readLocations(response.data.student._id));
+                                dispatch(readCalendar(response.data.student._id));
+                                activateListener(dispatch, response.data.student._house, response.data.student._id);
                                 dispatch({
                                     type: 'READ_STUDENT_FULFILLED',
                                     payload: response.data.student
@@ -49,9 +51,7 @@ export function readStudent() {
                         } else {
                             dispatch({type: 'READ_STUDENT_REJECTED', payload: response.data.reason});
                         }
-                    }).catch((err) => {
-                      console.log(err);
-                    });
+                      });
                 } else {
                     dispatch({type: 'READ_STUDENT_EMPTY', payload: false});
                 }
@@ -68,7 +68,7 @@ export function readStudentMajor(id) {
         try{
         AsyncStorage.getItem('@RIDGE-Student:auth_token', (err, token) => {
             if(token !== null){
-              instance.get("students/app-read", {params: {id, minor: false}, headers: { 'X-Access-Token': token}}, (response) => {
+              instance.get("students/app-read", {params: {id, minor: false}, headers: { 'X-Access-Token': token}}).then((response) => {
                   if (response.status === 200 && response.data.success) {
                       dispatch({type: 'READ_STUDENT_MAJOR_FULFILLED', payload: response.data.student});
                   } else {
@@ -93,7 +93,7 @@ export function readStudentMinor(id) {
       try{
       AsyncStorage.getItem('@RIDGE-Student:auth_token', (err, token) => {
           if(token !== null){
-            instance.get("students/app-read", {params: {id, minor: true}, headers: { 'X-Access-Token': token}}, (response) => {
+            instance.get("students/app-read", {params: {id, minor: true}, headers: { 'X-Access-Token': token}}).then((response) => {
                 if (response.status === 200 && response.data.success) {
                     dispatch({type: 'READ_STUDENT_MINOR_FULFILLED', payload: response.data.student});
                 } else {
@@ -118,7 +118,7 @@ export function readLocations(id) {
         try{
         AsyncStorage.getItem('@RIDGE-Student:auth_token', (err, token) => {
             if(token !== null){
-              instance.get("locations/app-read-locations", {params : {id}, headers: { 'X-Access-Token': token}}, (response) => {
+              instance.get("locations/app-read-locations", {params : {id}, headers: { 'X-Access-Token': token}}).then((response) => {
                   if (response.status === 200 && response.data.success) {
                       dispatch({type: 'READ_LOCATIONS_FULFILLED', payload: response.data.locations});
                   } else {
@@ -143,7 +143,7 @@ export function updateLocation(id, locationID) {
         try{
         AsyncStorage.getItem('@RIDGE-Student:auth_token', (err, token) => {
             if(token !== null){
-              instance.get("students/app-update-location", {params: {id, locationID}, headers: { 'X-Access-Token': token}}, (response) => {
+              instance.get("students/app-update-location", {params: {id, locationID}, headers: { 'X-Access-Token': token}}).then((response) => {
                   if (response.status === 200 && response.data.success) {
                       dispatch({type: 'UPDATE_LOCATION_FULFILLED', payload: response.data.student});
                   } else {
@@ -183,9 +183,10 @@ export function getHouseConfig(id) {
         try{
         AsyncStorage.getItem('@RIDGE-Student:auth_token', (err, token) => {
             if(token !== null){
-              instance.get("students/app-get-config", {params: {id}, headers: { 'X-Access-Token': token}}, response => {
+              instance.get("students/app-get-config", {params: {id}, headers: { 'X-Access-Token': token}}).then(response => {
                   if (response.status === 200 && response.data.success) {
                       dispatch({type: 'GET_HOUSE_CONFIG_FULFILLED', payload: response.data.config});
+                      console.log(response.data.config);
                   } else {
                       dispatch({type: 'GET_HOUSE_CONFIG_REJECTED', payload: response.data.reason});
                   }
@@ -208,7 +209,7 @@ export function readCalendar(id) {
         try{
         AsyncStorage.getItem('@RIDGE-Student:auth_token', (err, token) => {
             if(token !== null){
-              instance.get("calendar/app-read-calendar", {params: {id}, headers: { 'X-Access-Token': token}}, response => {
+              instance.get("calendar/app-read-calendar", {params: {id}, headers: { 'X-Access-Token': token}}).then(response => {
                   if (response.status === 200 && response.data.success) {
                       dispatch({type: 'READ_CALENDAR_FULFILLED', payload: response.data.events});
                   } else {

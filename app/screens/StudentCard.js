@@ -6,14 +6,13 @@ class StudentCard extends React.Component{
     render(){
         var timelastout = new Date(this.props.app.student.timelastout);
         var style = StyleSheet.flatten([styles.container, {borderColor: this.props.app.student.location.colour}]);
-        console.log(this.props.app.config);
         return(
             <View style={style}>
                 <View style={styles.dateTimeContainer}><Text style={styles.dateTimeText}>{timelastout.toLocaleTimeString()}</Text>
                     <Text style={styles.dateTimeText}>{timelastout.toLocaleDateString()}</Text></View>
                 <Text style={styles.nameText}>{this.props.app.student.firstname} {this.props.app.student.surname}</Text>
-                <Text style={styles.locationText}>{this.props.app.config.YEARGROUP_NAMES}</Text>
-                <Text style={styles.locationText}>{this.props.app.student.location.name}</Text>
+                <View style={{flex: 1}}><Text style={styles.locationText}>{this.props.app.fetched && this.props.app.config.YEARGROUP_NAMES[this.props.app.student.yeargroup]}</Text>
+                <Text style={styles.locationText}>{this.props.app.student.location.name}</Text></View>
             </View>
         )
     }
@@ -24,15 +23,11 @@ var styles = StyleSheet.create({
         borderWidth: 10,
         backgroundColor: "#FFFFFF",
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'center',
         padding: 10,
-        margin: 40,
-        alignSelf: "stretch"
+        margin: 40
     },
     dateTimeContainer:{
-        alignSelf: "stretch"
+        flex: 5
     },
     dateTimeText:{
         textAlign: "center",
@@ -42,13 +37,12 @@ var styles = StyleSheet.create({
     },
     nameText:{
         textAlign: "center",
-        alignSelf: "stretch",
         fontSize: 40,
-        fontWeight: "400"
+        fontWeight: "400",
+        flex: 5
     },
     locationText: {
         textAlign: "center",
-        alignSelf: "auto",
         fontSize: 20,
         fontWeight: "400",
         color: "gray"

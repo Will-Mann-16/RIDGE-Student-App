@@ -4,6 +4,43 @@ import { List, ListItem, Text, H2, Content } from "native-base";
 import { connect } from "react-redux";
 
 class CalendarScreen extends React.Component{
+  renderSections = () => {
+    if(this.props.app.calendar.length > 0){
+      var list = this.props.app.calendar.find((element) => {
+          return new Date(element.starttime) > new Date().setHours(0).setMinutes(0).setSeconds(0).setMilliseconds(0);
+      });
+      var currentDay = new Date().toDateString();
+      var result = [];
+      var index = 0;
+      while(index < list.length){
+          var currentEvent = this.props.app.calendar[index];
+          var date = new Date(currentEvent.startime);
+          var day = date.toDateString();
+          if(day === currentDay){
+              var findRes = result.find((element) => {
+                  return element.title === day
+              });
+              if(findRes.length == 0){
+                  result.push({title: day, data: [currentEvent]});
+              }
+              else{
+                  var resIndex = result.indexOf(findRes[0]);
+                  var oldRes = result[resIndex];
+                  oldRes.data.push(currentEvent);
+                  result[resIndex] = oldRes;
+              }
+              index++;
+          }
+          else{
+              currentDay = day;
+          }
+      }
+      return result;
+    }
+    else{
+      return [];
+    }
+  }
     render(){
         return(
             <Content>
@@ -20,38 +57,7 @@ class CalendarScreen extends React.Component{
                       );
                   }}
                   renderSectionHeader={({ section: { title }}) => <ListItem itemDivider><Text>{title}</Text></ListItem>}
-                  sections={() => {
-                      var list = this.props.app.calendar.find((element) => {
-                          return new Date(element.starttime) > new Date().setHours(0).setMinutes(0).setSeconds(0).setMilliseconds(0);
-                      });
-                      var currentDay = new Date().toDateString();
-                      var result = [];
-                      var index = 0;
-                      while(index < list.length){
-                          var currentEvent = this.props.app.calendar[index];
-                          var date = new Date(currentEvent.startime);
-                          var day = date.toDateString();
-                          if(day === currentDay){
-                              var findRes = result.find((element) => {
-                                  return element.title === day
-                              });
-                              if(findRes.length == 0){
-                                  result.push({title: day, data: [currentEvent]});
-                              }
-                              else{
-                                  var resIndex = result.indexOf(findRes[0]);
-                                  var oldRes = result[resIndex];
-                                  oldRes.data.push(currentEvent);
-                                  result[resIndex] = oldRes;
-                              }
-                              index++;
-                          }
-                          else{
-                              currentDay = day;
-                          }
-                      }
-                      return result;
-                  }}        />
+                  sections={this.renderSections()}        />
             </Content>
         );
     }

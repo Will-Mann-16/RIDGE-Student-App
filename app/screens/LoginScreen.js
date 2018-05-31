@@ -1,6 +1,8 @@
 import React from "react";
+import { Platform } from "react-native";
 import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Left, Right, Icon, Form, Text } from "native-base";
 import { connect } from "react-redux";
+import * as Expo from "expo";
 import { authenticateStudent } from "../actions/appActions";
 
 class LoginScreen extends React.Component{
@@ -17,7 +19,7 @@ class LoginScreen extends React.Component{
                 <Text>Login</Text>
             </Button>
         );
-        if(this.props.app.fetching){
+        if(this.props.app.login.fetching){
             loginButton = (
                 <Button onPress={null} iconLeft block info style={{ margin: 15, marginTop: 50 }}>
                     <Icon active name="ios-cloud-circle" />
@@ -25,8 +27,8 @@ class LoginScreen extends React.Component{
                 </Button>
             );
         }
-        if(this.props.app.fetched){
-            if(this.props.app.authenticated){
+        if(this.props.app.login.fetched){
+            if(this.props.app.login.authenticated){
                 loginButton = (
                     <Button onPress={null} iconLeft block success style={{ margin: 15, marginTop: 50 }}>
                         <Icon active name="ios-checkmark-circle" />
@@ -45,10 +47,10 @@ class LoginScreen extends React.Component{
         }
         return(
             <Container>
-                <Header>
+                <Header style={{ backgroundColor: "#23265C", color: "white", marginTop: (Platform.OS === 'ios') ? 0 : Expo.Constants.statusBarHeight }}>
                     <Left/>
                     <Body>
-                    <Title>Login to RIDGE</Title>
+                    <Title>Login</Title>
                     </Body>
                     <Right />
                 </Header>

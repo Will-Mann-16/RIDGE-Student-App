@@ -1,6 +1,7 @@
 import React from "react"
 import {connect} from "react-redux"
 import { View,SectionList, Text, StyleSheet, TouchableOpacity } from "react-native"
+import { H1, H2 } from "native-base"
 import * as appActions from "../actions/appActions"
 
 class LocationsList extends React.Component{
@@ -16,7 +17,7 @@ class LocationsList extends React.Component{
             return (<TouchableOpacity style={[styles.locationButton, {backgroundColor: item.colour}]} onPress={this.updateLocation.bind(this, item._id)}><Text style={styles.locationText}>{item.name}</Text></TouchableOpacity>)
         }
         var locationHeader = ({section}) => {
-            return section.key !== "" ? (<Text style={styles.locationHeader}>{section.key}</Text>) : null
+            return section.key !== "" ? (<H2 style={styles.locationHeader}>{section.key}</H2>) : null
         }
         var sections = [];
         for(var i = 0; i < this.props.app.config.LOCATION_HEADINGS.length; i++){
@@ -26,11 +27,11 @@ class LocationsList extends React.Component{
                     items.push(location);
                 }
             });
-            sections.push({data: items, key: this.props.app.config.LOCATION_HEADINGS[i]});
+            sections.push({data: items, key: i > 0 ? this.props.app.config.LOCATION_HEADINGS[i] : ""});
         }
         return(
             <View style={styles.container}>
-              <Text style={styles.header}>LOCATIONS</Text>
+              <H1 style={{textAlign: "center"}}>LOCATIONS</H1>
               <SectionList renderItem={locationItem} renderSectionHeader={locationHeader} sections={sections} />
             </View>
         );
@@ -39,7 +40,8 @@ class LocationsList extends React.Component{
 
 var styles = StyleSheet.create({
     container:{
-        backgroundColor: "white"
+        backgroundColor: "white",
+        flex: 1
     },
     header:{
         textAlign: "center",
@@ -48,9 +50,7 @@ var styles = StyleSheet.create({
         padding: 10
     },
     locationHeader:{
-        textAlign: "center",
-        fontSize: 20,
-        fontWeight: 'bold'
+        textAlign: "center"
     },
     locationButton:{
         flex: 1,
