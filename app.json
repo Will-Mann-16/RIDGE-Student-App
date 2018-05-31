@@ -2,6 +2,14 @@
   "expo": {
     "name": "RIDGE Student",
     "sdkVersion": "26.0.0",
+    "version": "1.0.0",
+    "slug": "ridge-student",
+    "ios": {
+      "bundleIdentifier": "com.clowd.ridgestudent"
+    },
+    "android": {
+      "package": "com.clowd.ridgestudent"
+    },
     "splash":{
       "image": "./splash.png",
       "backgroundColor": "#23265C",
