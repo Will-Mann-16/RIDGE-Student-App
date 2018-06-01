@@ -47,14 +47,14 @@ class LoginScreen extends React.Component{
         }
         return(
             <Container>
-                <Header style={{ backgroundColor: "#23265C", color: "white", marginTop: (Platform.OS === 'ios') ? 0 : Expo.Constants.statusBarHeight }}>
+                <Header style={{ backgroundColor: "#23265C", marginTop: (Platform.OS === 'ios') ? 0 : Expo.Constants.statusBarHeight }}>
                     <Left/>
                     <Body>
-                    <Title>Login</Title>
+                    <Title style={{color: "white"}}>Login</Title>
                     </Body>
                     <Right />
                 </Header>
-                <Content style={{ backgroundColor: "white", margin: 10 }}>
+                <Content style={{ backgroundColor: "white" }}>
                     <Form>
                         <Item floatingLabel>
                             <Label>Username</Label>

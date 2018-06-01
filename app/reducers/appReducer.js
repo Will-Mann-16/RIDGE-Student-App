@@ -15,6 +15,7 @@ const initialState = {
     house: {}
 };
 export default function reducer(state = initialState, action){
+  console.log(action.type);
   switch(action.type){
     case "AUTHENTICATE_STUDENT":
       return {...state, login: {...state.login, fetching: true, fetched: false}};

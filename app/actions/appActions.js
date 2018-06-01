@@ -7,7 +7,7 @@ export function authenticateStudent(username, password) {
     return dispatch => {
         dispatch({type: 'AUTHENTICATE_STUDENT'});
         instance.post("students/authenticate", {username, password}).then((response) => {
-            if (response.status === 200 && response.data.success) {
+            if (response.data.success) {
                 if (response.data.authenticated) {
                     try {
                         AsyncStorage.setItem('@RIDGE-Student:auth_token', response.data.token, () => {
@@ -23,6 +23,8 @@ export function authenticateStudent(username, password) {
             } else {
                 dispatch({type: 'AUTHENTICATE_STUDENT_REJECTED', payload: response.data.reason});
             }
+        }).catch((response) => {
+            dispatch({type: 'AUTHENTICATE_STUDENT_REJECTED', payload: response.data.reason});
         });
     };
 }
