@@ -24,7 +24,7 @@ export function authenticateStudent(username, password) {
                 dispatch({type: 'AUTHENTICATE_STUDENT_REJECTED', payload: response.data.reason});
             }
         }).catch((response) => {
-            dispatch({type: 'AUTHENTICATE_STUDENT_REJECTED', payload: response.data.reason});
+            dispatch({type: 'AUTHENTICATE_STUDENT_REJECTED', payload: response});
         });
     };
 }

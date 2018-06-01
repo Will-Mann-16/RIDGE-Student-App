@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, StatusBar } from "react-native";
 import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Left, Right, Icon, Form, Text } from "native-base";
 import { connect } from "react-redux";
 import * as Expo from "expo";
@@ -27,7 +27,7 @@ class LoginScreen extends React.Component{
                 </Button>
             );
         }
-        if(this.props.app.login.fetched){
+        else if(this.props.app.login.fetched){
             if(this.props.app.login.authenticated){
                 loginButton = (
                     <Button onPress={null} iconLeft block success style={{ margin: 15, marginTop: 50 }}>
@@ -47,6 +47,7 @@ class LoginScreen extends React.Component{
         }
         return(
             <Container>
+              <StatusBar backgroundColor="#23265C" />
                 <Header style={{ backgroundColor: "#23265C", marginTop: (Platform.OS === 'ios') ? 0 : Expo.Constants.statusBarHeight }}>
                     <Left/>
                     <Body>

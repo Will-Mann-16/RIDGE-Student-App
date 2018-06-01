@@ -2,7 +2,7 @@ import React from "react";
 import * as Expo from "expo";
 import {connect} from "react-redux";
 import SlidingUpPanel from 'rn-sliding-up-panel';
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform, StatusBar } from "react-native";
 import { Link } from "react-router-native";
 import { Container, Header, Left, Right, Body, Text, Title, Icon, Content, Button, Footer, FooterTab } from "native-base";
 import StudentCard from "./StudentCard";
@@ -55,6 +55,7 @@ class HomeScreen extends React.Component {
       }
         return (
             <Container style={{ backgroundColor: backgroundColour}}>
+              <StatusBar backgroundColor={headerColour}/>
                 <Header style={{ backgroundColor: headerColour, marginTop: (Platform.OS === 'ios') ? 0 : Expo.Constants.statusBarHeight }}>
                     <Body>
                     <Title style={{ color: textColour }}>{this.props.app.fetched ? this.props.app.house.name : "RIDGE"}</Title>
