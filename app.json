@@ -15,6 +15,7 @@
       "backgroundColor": "#23265C",
       "resizeMode": "contain"
     },
+    "primaryColor": "#23265C",
     "icon": "icon.png"
   }
 }
