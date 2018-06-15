@@ -6,7 +6,7 @@ import * as appActions from "../actions/appActions"
 
 class LocationsList extends React.Component{
     updateLocation(location){
-        this.props.dispatch(appActions.updateLocation(this.props.app.student._id, location));
+        this.props.dispatch(appActions.updateLocation(this.props.app.student._id, location, this.props.app.student._house));
         this.props.close(0)
     }
     refreshData(){

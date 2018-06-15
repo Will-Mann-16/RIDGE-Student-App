@@ -1,6 +1,6 @@
 import {AsyncStorage} from 'react-native';
 import axios from "axios";
-import {disconnect, activateListener} from '../socket';
+import {disconnect, activateListener, redrawMinor} from '../socket';
 import {instance, scriptsDirectory} from "../constants";
 
 export function authenticateStudent(username, password) {
@@ -139,7 +139,7 @@ export function readLocations(id) {
     };
 }
 
-export function updateLocation(id, locationID) {
+export function updateLocation(id, locationID, house) {
     return dispatch => {
         dispatch({type: 'UPDATE_LOCATION'});
         try{
@@ -147,6 +147,7 @@ export function updateLocation(id, locationID) {
             if(token !== null){
               instance.get("students/app-update-location", {params: {id, locationID}, headers: { 'X-Access-Token': token}}).then((response) => {
                   if (response.status === 200 && response.data.success) {
+                      redrawMinor(house);
                       dispatch({type: 'UPDATE_LOCATION_FULFILLED', payload: response.data.student});
                   } else {
                       dispatch({type: 'UPDATE_LOCATION_REJECTED', payload: response.data.reason});

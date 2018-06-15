@@ -39,3 +39,8 @@ export function activateListener(dispatch, house, id) {
           });
       });
 }
+export function redrawMinor(house){
+  if(connected){
+    socket.emit("socket-client-server-redraw-minor"{house});
+  }
+}
