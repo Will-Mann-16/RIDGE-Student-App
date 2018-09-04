@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-export var WELLY_IP = "194.73.225.206";
-export var INTERNAL_IP = "10.11.0.23";
+export var WELLY_ADDRESS = "ridge.wellingtoncollege.org.uk";
 export var PORT = "8081";
-export var HOST_IP = "http://" + WELLY_IP + ":" + PORT;
+export var HOST_IP = "http://" + WELLY_ADDRESS + ":" + PORT;
 export var scriptsDirectory = HOST_IP + '/api/';
 export var instance = axios.create({
     baseURL: scriptsDirectory

@@ -62,9 +62,6 @@ class HomeScreen extends React.Component {
                     </Body>
                     <Right>
                         <Button transparent>
-                            <Link to="/calendar"><Icon name="calendar" /></Link>
-                        </Button>
-                        <Button transparent>
                             <Link to="/settings"><Icon name="cog" /></Link>
                         </Button>
                     </Right>

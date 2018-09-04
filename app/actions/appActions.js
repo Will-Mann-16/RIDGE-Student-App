@@ -189,7 +189,6 @@ export function getHouseConfig(id) {
               instance.get("students/app-get-config", {params: {id}, headers: { 'X-Access-Token': token}}).then(response => {
                   if (response.status === 200 && response.data.success) {
                       dispatch({type: 'GET_HOUSE_CONFIG_FULFILLED', payload: response.data.config});
-                      console.log(response.data.config);
                   } else {
                       dispatch({type: 'GET_HOUSE_CONFIG_REJECTED', payload: response.data.reason});
                   }

@@ -98,7 +98,6 @@ class AppLayout extends React.Component{
                                         <Right/>
                                     </Header>
                                     <Switch>
-                                        <Route exact path="/calendar" component={CalendarScreen} />
                                         <Route exact path="/settings" component={SettingsScreen} />
                                     </Switch>
                                 </Container>
