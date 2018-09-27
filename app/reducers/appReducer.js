@@ -10,7 +10,10 @@ const initialState = {
   authenticated: false,
   student: {},
   locations: [],
-    config: {},
+    config: {
+    LOCATION_HEADINGS: [],
+        DEFAULT_LOCATION: ''
+    },
     calendar: [],
     house: {}
 };
